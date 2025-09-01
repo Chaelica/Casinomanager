@@ -8,6 +8,7 @@
 
 #define MAX_NAME_LENGTH 50
 #define ERROR_EXIT 1
+#define SAFE_FREE(p) do { if ((p) != NULL) { free(p); (p) = NULL; } } while(0)
 
 typedef enum {
     SLOT_MACHINE,
@@ -72,8 +73,7 @@ void savePlayers();
 void loadPlayers();
 void sortPlayers();
 
-// Binarna pretraga i komparatori
-int comparePlayerByID(const void* a, const void* b);   // DODANO: prototip komparatora za qsort/bsearch
+int comparePlayerByID(const void* a, const void* b);
 Player* findPlayerByID(int id);
 Player* searchPlayerBinary(int id);
 void recursivePrintPlayers(int index);
