@@ -18,7 +18,6 @@ static void logOperation(const char* op) {
     printf("[LOG] %s\n", op);
 }
 
-/* Globalni podaci */
 Player* players = NULL;
 Game* games = NULL;
 int playerCount = 0;
@@ -26,17 +25,14 @@ int gameCount = 0;
 int nextPlayerID = 1;
 int nextGameID = 1;
 
-void freeMemory() {
-    free(players);
-    free(games);
-    players = NULL;
-    games = NULL;
+void freeMemory(void) {
+    SAFE_FREE(players);
+    SAFE_FREE(games);
     playerCount = 0;
     gameCount = 0;
 }
 
-
-void addPlayer() {
+void addPlayer(void) {
     Player* tmp = (Player*)realloc(players, (playerCount + 1) * sizeof(Player));
     if (!tmp) {
         perror("Neuspjesno alociranje memorije za igrace");
@@ -58,7 +54,7 @@ void addPlayer() {
     printf("Igrac dodan: %s %s (ID: %d)\n", p->firstName, p->lastName, p->playerID);
 }
 
-void listPlayers() {
+void listPlayers(void) {
     if (playerCount == 0) {
         printf("Nema igraca.\n");
         return;
@@ -73,7 +69,7 @@ void listPlayers() {
     }
 }
 
-void updatePlayer() {
+void updatePlayer(void) {
     int id;
     printf("Unesite ID igraca za azuriranje: ");
     (void)scanf("%d", &id);
@@ -91,7 +87,7 @@ void updatePlayer() {
     printf("Igrac s tim ID-om nije pronaden.\n");
 }
 
-void deletePlayer() {
+void deletePlayer(void) {
     int id;
     printf("Unesite ID igraca za brisanje: ");
     (void)scanf("%d", &id);
@@ -107,8 +103,7 @@ void deletePlayer() {
         playerCount--;
 
         if (playerCount == 0) {
-            free(players);
-            players = NULL;
+            SAFE_FREE(players);
         }
         else {
             Player* tmp = (Player*)realloc(players, playerCount * sizeof(Player));
@@ -122,7 +117,7 @@ void deletePlayer() {
     printf("Igrac s tim ID-om nije pronaden.\n");
 }
 
-void savePlayers() {
+void savePlayers(void) {
     FILE* file = fopen(PLAYERS_FILENAME, "wb");
     if (!file) {
         perror("Greska pri otvaranju datoteke za zapis igraca");
@@ -135,7 +130,7 @@ void savePlayers() {
     fclose(file);
 }
 
-void loadPlayers() {
+void loadPlayers(void) {
     FILE* file = fopen(PLAYERS_FILENAME, "rb");
     if (!file) return;
 
@@ -158,8 +153,7 @@ void loadPlayers() {
         return;
     }
 
-    free(players);
-    players = NULL;
+    SAFE_FREE(players);
 
     if (playerCount > 0) {
         players = (Player*)malloc(playerCount * sizeof(Player));
@@ -170,8 +164,7 @@ void loadPlayers() {
         }
         if (fread(players, sizeof(Player), (size_t)playerCount, file) != (size_t)playerCount) {
             perror("Greska pri citanju igraca");
-            free(players);
-            players = NULL;
+            SAFE_FREE(players);
             playerCount = 0;
             fclose(file);
             return;
@@ -194,7 +187,7 @@ int compareByBalance(const void* a, const void* b) {
     return 0;
 }
 
-void sortPlayers() {
+void sortPlayers(void) {
     if (playerCount > 1 && players) {
         qsort(players, playerCount, sizeof(Player), compareByBalance);
         printf("Igraci sortirani po balansu (rastuce).\n");
@@ -244,8 +237,7 @@ void recursivePrintPlayers(int index) {
     recursivePrintPlayers(index + 1);
 }
 
-
-void addGame() {
+void addGame(void) {
     Game* tmp = (Game*)realloc(games, (gameCount + 1) * sizeof(Game));
     if (!tmp) {
         perror("Neuspjesno alociranje memorije za igre");
@@ -283,7 +275,7 @@ void addGame() {
     printf("Igra dodana: %s (ID: %d)\n", g->gameName, g->gameID);
 }
 
-void listGames() {
+void listGames(void) {
     if (gameCount == 0) {
         printf("Nema igara.\n");
         return;
@@ -299,7 +291,7 @@ void listGames() {
     }
 }
 
-void updateGame() {
+void updateGame(void) {
     int id;
     printf("Unesite ID igre za azuriranje: ");
     (void)scanf("%d", &id);
@@ -319,7 +311,7 @@ void updateGame() {
     printf("Igra azurirana.\n");
 }
 
-void deleteGame() {
+void deleteGame(void) {
     int id;
     printf("Unesite ID igre za brisanje: ");
     (void)scanf("%d", &id);
@@ -338,8 +330,7 @@ void deleteGame() {
     gameCount--;
 
     if (gameCount == 0) {
-        free(games);
-        games = NULL;
+        SAFE_FREE(games);
     }
     else {
         Game* tmp = (Game*)realloc(games, gameCount * sizeof(Game));
@@ -350,7 +341,7 @@ void deleteGame() {
     printf("Igra obrisana.\n");
 }
 
-void saveGames() {
+void saveGames(void) {
     FILE* file = fopen(GAMES_FILENAME, "wb");
     if (!file) {
         perror("Greska pri otvaranju datoteke za zapis igara");
@@ -363,7 +354,7 @@ void saveGames() {
     fclose(file);
 }
 
-void loadGames() {
+void loadGames(void) {
     FILE* file = fopen(GAMES_FILENAME, "rb");
     if (!file) return;
 
@@ -386,8 +377,7 @@ void loadGames() {
         return;
     }
 
-    free(games);
-    games = NULL;
+    SAFE_FREE(games);
 
     if (gameCount > 0) {
         games = (Game*)malloc(gameCount * sizeof(Game));
@@ -398,8 +388,7 @@ void loadGames() {
         }
         if (fread(games, sizeof(Game), (size_t)gameCount, file) != (size_t)gameCount) {
             perror("Greska pri citanju igara");
-            free(games);
-            games = NULL;
+            SAFE_FREE(games);
             gameCount = 0;
             fclose(file);
             return;
@@ -427,7 +416,7 @@ static Game* findGameByID(int id) {
     return (Game*)bsearch(&key, games, (size_t)gameCount, sizeof(Game), compareGameByID);
 }
 
-void sortGames() {
+void sortGames(void) {
     if (gameCount > 1 && games) {
         qsort(games, gameCount, sizeof(Game), compareGameByID);
         printf("Igre sortirane po ID-u (rastuce).\n");
@@ -436,7 +425,6 @@ void sortGames() {
         printf("Nedovoljno igara za sortiranje.\n");
     }
 }
-
 
 void renameFile(const char* oldName, const char* newName) {
     if (!oldName || !newName) {
