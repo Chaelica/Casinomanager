@@ -1,7 +1,7 @@
 #define _CRT_SECURE_NO_WARNINGS
 #include "casino.h"
 
-int main() {
+int main(void) {
     loadPlayers();
     loadGames();
 
@@ -29,15 +29,33 @@ int main() {
         (void)getchar();
 
         switch ((MenuOption)choice) {
-        case DODAJ_IGRACA:             addPlayer(); break;
-        case PRIKAZI_IGRACE:           listPlayers(); break;
-        case AZURIRAJ_IGRACA:          updatePlayer(); break;
-        case OBRISI_IGRACA:            deletePlayer(); break;
-        case DODAJ_IGRU:               addGame(); break;
-        case PRIKAZI_IGRE:             listGames(); break;
-        case AZURIRAJ_IGRU:            updateGame(); break;
-        case OBRISI_IGRU:              deleteGame(); break;
-        case SORTIRAJ_IGRACE:          sortPlayers(); break;
+        case DODAJ_IGRACA:
+            addPlayer();
+            break;
+        case PRIKAZI_IGRACE:
+            listPlayers();
+            break;
+        case AZURIRAJ_IGRACA:
+            updatePlayer();
+            break;
+        case OBRISI_IGRACA:
+            deletePlayer();
+            break;
+        case DODAJ_IGRU:
+            addGame();
+            break;
+        case PRIKAZI_IGRE:
+            listGames();
+            break;
+        case AZURIRAJ_IGRU:
+            updateGame();
+            break;
+        case OBRISI_IGRU:
+            deleteGame();
+            break;
+        case SORTIRAJ_IGRACE:
+            sortPlayers();
+            break;
         case PRETRAZI_IGRACE: {
             int id;
             printf("Unesite ID igraca za pretragu: ");
@@ -49,8 +67,12 @@ int main() {
                 printf("Igrac nije pronadjen.\n");
             break;
         }
-        case PRINTAJ_REKURZIVNO:       recursivePrintPlayers(0); break;
-        case SORTIRAJ_IGRE:            sortGames(); break;
+        case PRINTAJ_REKURZIVNO:
+            recursivePrintPlayers(0);
+            break;
+        case SORTIRAJ_IGRE:
+            sortGames();
+            break;
         case PREIMENUJ_DATOTEKU: {
             char oldName[100], newName[100];
             printf("Unesite staro ime datoteke: ");
@@ -67,9 +89,13 @@ int main() {
             deleteFile(filename);
             break;
         }
-        case SORTIRAJ_IGRACE_FP:       sortPlayersWithFunctionPointer(compareByBalance); break;
-        case IZLAZ:                    break;
-        default:                       printf("Nevazeci odabir.\n");
+        case SORTIRAJ_IGRACE_FP:
+            sortPlayersWithFunctionPointer(compareByBalance);
+            break;
+        case IZLAZ:
+            break;
+        default:
+            printf("Nevazeci odabir.\n");
         }
     } while (choice != IZLAZ);
 
