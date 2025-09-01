@@ -72,6 +72,8 @@ void savePlayers();
 void loadPlayers();
 void sortPlayers();
 
+// Binarna pretraga i komparatori
+int comparePlayerByID(const void* a, const void* b);   // DODANO: prototip komparatora za qsort/bsearch
 Player* findPlayerByID(int id);
 Player* searchPlayerBinary(int id);
 void recursivePrintPlayers(int index);
