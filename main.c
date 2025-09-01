@@ -8,55 +8,37 @@ int main() {
     int choice;
     do {
         printf("\n=== Casino Game Manager ===\n");
-        printf("1. Dodaj igraca\n");
-        printf("2. Prikazi sve igrace\n");
-        printf("3. Azuriraj saldo igraca\n");
-        printf("4. Obrisi igraca\n");
-        printf("5. Dodaj igru\n");
-        printf("6. Prikazi sve igre\n");
-        printf("7. Azuriraj igru\n");
-        printf("8. Obrisi igru\n");
-        printf("9. Sortiraj igrace po saldu\n");
-        printf("10. Pretrazi igraca po ID-u (binarna pretraga)\n");
-        printf("11. Ispis igraca rekurzijom\n");
-        printf("12. Sortiraj igre (bubble sort)\n");
-        printf("13. Preimenuj datoteku\n");
-        printf("14. Obrisi datoteku\n");
-        printf("16. Sortiraj igrace funkcijskim pokazivacem\n");
-        printf("0. Izlaz\n");
+        printf("%d. Dodaj igraca\n", DODAJ_IGRACA);
+        printf("%d. Prikazi sve igrace\n", PRIKAZI_IGRACE);
+        printf("%d. Azuriraj saldo igraca\n", AZURIRAJ_IGRACA);
+        printf("%d. Obrisi igraca\n", OBRISI_IGRACA);
+        printf("%d. Dodaj igru\n", DODAJ_IGRU);
+        printf("%d. Prikazi sve igre\n", PRIKAZI_IGRE);
+        printf("%d. Azuriraj igru\n", AZURIRAJ_IGRU);
+        printf("%d. Obrisi igru\n", OBRISI_IGRU);
+        printf("%d. Sortiraj igrace po saldu (qsort)\n", SORTIRAJ_IGRACE);
+        printf("%d. Pretrazi igraca po ID-u (bsearch)\n", PRETRAZI_IGRACE);
+        printf("%d. Ispis igraca rekurzijom\n", PRINTAJ_REKURZIVNO);
+        printf("%d. Sortiraj igre (qsort)\n", SORTIRAJ_IGRE);
+        printf("%d. Preimenuj datoteku\n", PREIMENUJ_DATOTEKU);
+        printf("%d. Obrisi datoteku\n", OBRISI_DATOTEKU);
+        printf("%d. Sortiraj igrace funkcijskim pokazivacem\n", SORTIRAJ_IGRACE_FP);
+        printf("%d. Izlaz\n", IZLAZ);
         printf("Odabir: ");
         (void)scanf("%d", &choice);
         (void)getchar();
 
-        switch (choice) {
-        case 1:
-            addPlayer();
-            break;
-        case 2:
-            listPlayers();
-            break;
-        case 3:
-            updatePlayer();
-            break;
-        case 4:
-            deletePlayer();
-            break;
-        case 5:
-            addGame();
-            break;
-        case 6:
-            listGames();
-            break;
-        case 7:
-            updateGame();
-            break;
-        case 8:
-            deleteGame();
-            break;
-        case 9:
-            sortPlayers();
-            break;
-        case 10: {
+        switch ((MenuOption)choice) {
+        case DODAJ_IGRACA:             addPlayer(); break;
+        case PRIKAZI_IGRACE:           listPlayers(); break;
+        case AZURIRAJ_IGRACA:          updatePlayer(); break;
+        case OBRISI_IGRACA:            deletePlayer(); break;
+        case DODAJ_IGRU:               addGame(); break;
+        case PRIKAZI_IGRE:             listGames(); break;
+        case AZURIRAJ_IGRU:            updateGame(); break;
+        case OBRISI_IGRU:              deleteGame(); break;
+        case SORTIRAJ_IGRACE:          sortPlayers(); break;
+        case PRETRAZI_IGRACE: {
             int id;
             printf("Unesite ID igraca za pretragu: ");
             (void)scanf("%d", &id);
@@ -67,13 +49,9 @@ int main() {
                 printf("Igrac nije pronadjen.\n");
             break;
         }
-        case 11:
-            recursivePrintPlayers(0);
-            break;
-        case 12:
-            sortGames();
-            break;
-        case 13: {
+        case PRINTAJ_REKURZIVNO:       recursivePrintPlayers(0); break;
+        case SORTIRAJ_IGRE:            sortGames(); break;
+        case PREIMENUJ_DATOTEKU: {
             char oldName[100], newName[100];
             printf("Unesite staro ime datoteke: ");
             (void)scanf("%99s", oldName);
@@ -82,22 +60,18 @@ int main() {
             renameFile(oldName, newName);
             break;
         }
-        case 14: {
+        case OBRISI_DATOTEKU: {
             char filename[100];
             printf("Unesite ime datoteke za brisanje: ");
             (void)scanf("%99s", filename);
             deleteFile(filename);
             break;
         }
-        case 16:
-            sortPlayersWithFunctionPointer(compareByBalance);
-            break;
-        case 0:
-            break;
-        default:
-            printf("Nevazeci odabir.\n");
+        case SORTIRAJ_IGRACE_FP:       sortPlayersWithFunctionPointer(compareByBalance); break;
+        case IZLAZ:                    break;
+        default:                       printf("Nevazeci odabir.\n");
         }
-    } while (choice != 0);
+    } while (choice != IZLAZ);
 
     freeMemory();
     return 0;
